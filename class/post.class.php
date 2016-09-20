@@ -20,7 +20,7 @@ class Post extends API
 
     public function getPosts()
     {
-        $data = $this->cached_posts();
+        $data = $this->cached_posts;
 
         return $data;
     }
@@ -74,7 +74,7 @@ class Post extends API
  * Protected Methods
  */
 
-    protected function getAllPost()
+    private function getAllPost()
     {
         $posts = json_decode(file_get_contents($this->postDataTable), true);
 
@@ -85,12 +85,12 @@ class Post extends API
         }
     }
 
-    protected function getPost($id)
+    private function getPost($id)
     {
         return $this->cached_posts[$id];
     }
 
-    protected function save($data)
+    private function save($data)
     {
         $filename = $this->postDataTable;
 
