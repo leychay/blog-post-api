@@ -70,6 +70,17 @@ class Post extends API
         return $saved;
     }
 
+    public function getPost()
+    {
+        if ($this->method != 'GET') {
+            throw new Exception("Only GET method is allowed!");
+        }
+
+        $id = $this->verb;
+
+        return $this->cached_posts[$id];
+    }
+
 /**
  * Protected Methods
  */
@@ -83,11 +94,6 @@ class Post extends API
         } else {
             return $posts;
         }
-    }
-
-    private function getPost($id)
-    {
-        return $this->cached_posts[$id];
     }
 
     private function save($data)
@@ -104,7 +110,7 @@ class Post extends API
                 $response['message'] = "Unable to open datastore";
             }
 
-            if (fwrite($handle, $data) === FALSE) {
+            if (fwrite($handle, $data) === false) {
                 $response['status'] = false;
                 $response['message'] = "Unable to save data to datastore";
             }
@@ -121,5 +127,4 @@ class Post extends API
 
         return $response;
     }
-
 }
