@@ -39,7 +39,8 @@ abstract class API
     {
         header("Access-Control-Allow-Origin: *");
         header("Access-Control-Allow-Methods: *");
-        header("Content-Type: application/json");
+        header("Access-Control-Allow-Headers: Content-Type");
+        header("Content-Type: application/json;application/x-www-form-urlencoded");
 
         $this->args = explode('/', rtrim($request, '/'));
         $this->endpoint = array_shift($this->args);
@@ -98,7 +99,8 @@ abstract class API
                 $msg .= implode(', ', $missing);
                 $msg .= ']. Operation failed to continue';
 
-                return $this->response($msg, 400);
+                throw new Exception($this->response($msg, 400));
+
             } else {
                 return $this->request;
             }
@@ -109,8 +111,10 @@ abstract class API
 
     private function response($data, $status = 200)
     {
-        header("HTTP/1.1 " . $status . " " . $this->requestStatus($status));
-        return json_encode($data);
+        $st = $this->requestStatus($status);
+        header("HTTP/1.1 " . $status . " " . $st);
+        $res = json_encode($data);
+        return $res;
     }
 
     private function cleanInputs($data)
