@@ -47,13 +47,15 @@ class Post extends API
 
         $saved = $this->save($updatedEntry);
 
+        $saved['params'] = $params;
+
         return $saved;
     }
 
     public function delete()
     {
-        if ($this->method != 'GET') {
-            throw new Exception("Only GET method is allowed!");
+        if ($this->method != 'DELETE') {
+            throw new Exception("Only DELETE method is allowed!");
         }
 
         $id = $this->verb;
